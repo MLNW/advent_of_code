@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+	"fmt"
+	"log"
+)
 
 type Instruction int64
 
@@ -9,11 +12,6 @@ const (
 	Down
 	Up
 )
-
-type Command struct {
-	Instruction Instruction
-	Value       int
-}
 
 func ParseInstruction(str string) Instruction {
 	switch str {
@@ -38,4 +36,13 @@ func (s Instruction) String() string {
 		return "up"
 	}
 	return "unknown"
+}
+
+type Command struct {
+	Instruction Instruction
+	Value       int
+}
+
+func (cmd Command) String() string {
+	return fmt.Sprintf("Command{'%s', %d}", cmd.Instruction, cmd.Value)
 }

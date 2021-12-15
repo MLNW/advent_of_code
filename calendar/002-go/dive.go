@@ -1,19 +1,16 @@
 package main
 
 import (
-	"bufio"
+	"advent-of-code-2021/utils/files"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func readInput(file os.File) ([]Command, error) {
+func parseInput(lines []string) []Command {
 	var commands []Command
-	scanner := bufio.NewScanner(&file)
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		parts := strings.Fields(line)
 		instruction := ParseInstruction(parts[0])
 		value, err := strconv.Atoi(parts[1])
@@ -22,7 +19,7 @@ func readInput(file os.File) ([]Command, error) {
 		}
 		commands = append(commands, Command{Instruction: instruction, Value: value})
 	}
-	return commands, scanner.Err()
+	return commands
 }
 
 func solve(commands []Command) int {
@@ -62,16 +59,8 @@ func solveAim(commands []Command) int {
 }
 
 func main() {
-	file, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatalf("Failed to open file!")
-	}
-	defer file.Close()
-
-	commands, err := readInput(*file)
-	if err != nil {
-		log.Fatalf("Failed to read file!")
-	}
+	lines := files.ReadLines("input.txt")
+	commands := parseInput(lines)
 
 	var solution int = solve(commands)
 	fmt.Printf("The solution is %d\n", solution)

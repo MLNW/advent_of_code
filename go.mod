@@ -1,3 +1,3 @@
-module de.lr.advent.2021
+module advent-of-code-2021
 
 go 1.17

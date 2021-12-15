@@ -1,25 +1,22 @@
 package main
 
 import (
-	"bufio"
+	"advent-of-code-2021/utils/files"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 )
 
-func readInput(file os.File) ([]int, error) {
+func parseInput(lines []string) []int {
 	var numbers []int
-	scanner := bufio.NewScanner(&file)
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		number, err := strconv.Atoi(line)
 		if err != nil {
 			log.Fatalf("Failed to parse number from: %s", line)
 		}
 		numbers = append(numbers, number)
 	}
-	return numbers, scanner.Err()
+	return numbers
 }
 
 func solve(numbers []int) int {
@@ -56,15 +53,8 @@ func solve_sliding(numbers []int) int {
 }
 
 func main() {
-	file, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatalf("Failed to open file!")
-	}
-	defer file.Close()
-	numbers, err := readInput(*file)
-	if err != nil {
-		log.Fatalf("Failed to read file!")
-	}
+	lines := files.ReadLines("input.txt")
+	numbers := parseInput(lines)
 
 	solution := solve(numbers)
 	fmt.Printf("The solution is %d\n", solution)
