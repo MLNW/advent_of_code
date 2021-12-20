@@ -44,3 +44,12 @@ func TestSolution(t *testing.T) {
 		t.Fatalf("Expected %d, but got %d", expected, result)
 	}
 }
+
+func TestLifeSupportSolution(t *testing.T) {
+	result := calcLifeSupportRating(lines, counters)
+
+	expected := 230
+	if result != int64(expected) {
+		t.Fatalf("Expected %d, but got %d", expected, result)
+	}
+}

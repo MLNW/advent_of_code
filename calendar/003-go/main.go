@@ -37,8 +37,23 @@ func calcPowerConsumption(counters [][2]int) int64 {
 	}
 	gamma := convertBinToDec(gammaRate)
 	epsilon := convertBinToDec(epsilonRate)
-	fmt.Printf("gamma: %s\nepsilon: %s\n", gammaRate, epsilonRate)
 	return gamma * epsilon
+}
+
+func calcLifeSupportRating(lines []string, counters [][2]int) int64 {
+	var oxygenGenerator string
+	var co2Scrubber string
+
+	for i, line := range lines {
+		if i > 0 {
+			// calc new counters
+		}
+
+	}
+
+	oxygen := convertBinToDec(oxygenGenerator)
+	co2 := convertBinToDec(co2Scrubber)
+	return oxygen * co2
 }
 
 func convertBinToDec(bin string) int64 {
@@ -58,4 +73,6 @@ func main() {
 	fmt.Println()
 	power := calcPowerConsumption(counters)
 	fmt.Println(power)
+	lifeSupport := calcLifeSupportRating(lines, counters)
+	fmt.Println(lifeSupport)
 }
