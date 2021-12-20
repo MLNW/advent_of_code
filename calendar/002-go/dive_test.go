@@ -14,12 +14,12 @@ var lines = []string{
 }
 
 var commands = []Command{
-	Command{Instruction: Forward, Value: 5},
-	Command{Instruction: Down, Value: 5},
-	Command{Instruction: Forward, Value: 8},
-	Command{Instruction: Up, Value: 3},
-	Command{Instruction: Down, Value: 8},
-	Command{Instruction: Forward, Value: 2},
+	{Instruction: Forward, Value: 5},
+	{Instruction: Down, Value: 5},
+	{Instruction: Forward, Value: 8},
+	{Instruction: Up, Value: 3},
+	{Instruction: Down, Value: 8},
+	{Instruction: Forward, Value: 2},
 }
 
 func TestParseInput(t *testing.T) {
