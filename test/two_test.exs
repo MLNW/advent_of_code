@@ -13,4 +13,22 @@ defmodule TwoTest do
 
     assert result == 15
   end
+
+  test "part one real" do
+    result = Puzzles.Two.part_one()
+
+    assert result == 14163
+  end
+
+  test "part two test" do
+    result = Puzzles.Two.part_two(@input)
+
+    assert result == 12
+  end
+
+  test "part two real" do
+    result = Puzzles.Two.part_two()
+
+    assert result == 12091
+  end
 end
