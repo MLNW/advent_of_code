@@ -1,10 +1,9 @@
 defmodule Puzzles.One do
-  def parse_input(input) when is_nil(input) do
-    Common.Utils.read_input("one")
-    |> parse_input()
+  defp parse_input(input) when is_nil(input) do
+    Common.Utils.read_input(1) |> parse_input()
   end
 
-  def parse_input(input) do
+  defp parse_input(input) do
     input
     |> String.split("\n")
     |> Enum.chunk_by(fn x -> x == "" end)

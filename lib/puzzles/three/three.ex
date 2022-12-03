@@ -1,7 +1,6 @@
 defmodule Puzzles.Three do
   defp parse_input(input) when is_nil(input) do
-    Common.Utils.read_input("three")
-    |> parse_input()
+    Common.Utils.read_input(3) |> parse_input()
   end
 
   defp parse_input(input) do
