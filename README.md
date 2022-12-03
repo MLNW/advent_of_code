@@ -1,3 +1,3 @@
-# AdventOfCode2022
+# Advent of Code
 
-This repository contains my solutions for this year's [Advent of Code](https://adventofcode.com/).
+This repository contains my solutions to the [Advent of Code](https://adventofcode.com).
