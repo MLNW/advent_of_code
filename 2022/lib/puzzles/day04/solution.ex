@@ -1,4 +1,4 @@
-defmodule Puzzles.Four do
+defmodule Puzzles.Day04 do
   defp parse_input(input) when is_nil(input) do
     Common.Utils.read_input(4) |> parse_input()
   end
