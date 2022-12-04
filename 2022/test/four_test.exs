@@ -22,4 +22,16 @@ defmodule FourTest do
 
     assert result == 487
   end
+
+  test "part two test" do
+    result = Puzzles.Four.part_two(@input)
+
+    assert result == 4
+  end
+
+  test "part two real" do
+    result = Puzzles.Four.part_two()
+
+    assert result == 849
+  end
 end

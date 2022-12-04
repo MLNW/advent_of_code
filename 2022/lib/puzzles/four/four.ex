@@ -7,14 +7,22 @@ defmodule Puzzles.Four do
     input
     |> String.split("\n")
     |> Enum.filter(&(&1 != ""))
+    |> Enum.map(&String.split(&1, ","))
+    |> Enum.map(&parse_assignments/1)
   end
 
   def part_one(input \\ nil) do
+    input |> part(&fully_contains?/1)
+  end
+
+  def part_two(input \\ nil) do
+    input |> part(&overlaps?/1)
+  end
+
+  defp part(input, mapper) do
     input
     |> parse_input()
-    |> Enum.map(&String.split(&1, ","))
-    |> Enum.map(&parse_assignments/1)
-    |> Enum.map(&fully_contains?/1)
+    |> Enum.map(&mapper.(&1))
     |> Enum.reduce(0, fn bool, acc -> if bool, do: acc + 1, else: acc end)
   end
 
@@ -27,10 +35,18 @@ defmodule Puzzles.Four do
     {a, b}
   end
 
-  defp fully_contains?([{first_a, second_a} | [{first_b, second_b} | _]]) do
+  defp fully_contains?([{a, b} | [{x, y} | _]]) do
     cond do
-      first_a <= first_b and second_a >= second_b -> true
-      first_b <= first_a and second_b >= second_a -> true
+      a <= x and b >= y -> true
+      x <= a and y >= b -> true
+      true -> false
+    end
+  end
+
+  defp overlaps?([{a, b} | [{x, y} | _]]) do
+    cond do
+      a in x..y or b in x..y -> true
+      x in a..b or y in a..b -> true
       true -> false
     end
   end
