@@ -1,5 +1,6 @@
 defmodule OneTest do
   use ExUnit.Case
+  import TestHelpers
 
   @input """
   1000
@@ -18,27 +19,9 @@ defmodule OneTest do
   10000
   """
 
-  test "part one test" do
-    result = Puzzles.One.part_one(@input)
+  aoc_test(24000, Puzzles.One.part_one(@input))
+  aoc_test(72478, Puzzles.One.part_one())
 
-    assert result == 24000
-  end
-
-  test "part one real" do
-    result = Puzzles.One.part_one()
-
-    assert result == 72478
-  end
-
-  test "part two test" do
-    result = Puzzles.One.part_two(@input)
-
-    assert result == 45000
-  end
-
-  test "part two real" do
-    result = Puzzles.One.part_two()
-
-    assert result == 210_367
-  end
+  aoc_test(45000, Puzzles.One.part_two(@input))
+  aoc_test(210_367, Puzzles.One.part_two())
 end

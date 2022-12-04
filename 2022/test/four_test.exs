@@ -1,5 +1,6 @@
 defmodule FourTest do
   use ExUnit.Case
+  import TestHelpers
 
   @input """
   2-4,6-8
@@ -11,27 +12,9 @@ defmodule FourTest do
 
   """
 
-  test "part one test" do
-    result = Puzzles.Four.part_one(@input)
+  aoc_test(2, Puzzles.Four.part_one(@input))
+  aoc_test(487, Puzzles.Four.part_one())
 
-    assert result == 2
-  end
-
-  test "part one real" do
-    result = Puzzles.Four.part_one()
-
-    assert result == 487
-  end
-
-  test "part two test" do
-    result = Puzzles.Four.part_two(@input)
-
-    assert result == 4
-  end
-
-  test "part two real" do
-    result = Puzzles.Four.part_two()
-
-    assert result == 849
-  end
+  aoc_test(4, Puzzles.Four.part_two(@input))
+  aoc_test(849, Puzzles.Four.part_two())
 end

@@ -1,5 +1,6 @@
 defmodule ThreeTest do
   use ExUnit.Case
+  import TestHelpers
 
   @input """
   vJrwpWtwJgWrhcsFMMfFFhFp
@@ -11,27 +12,9 @@ defmodule ThreeTest do
 
   """
 
-  test "part one test" do
-    result = Puzzles.Three.part_one(@input)
+  aoc_test(157, Puzzles.Three.part_one(@input))
+  aoc_test(8105, Puzzles.Three.part_one())
 
-    assert result == 157
-  end
-
-  test "part one real" do
-    result = Puzzles.Three.part_one()
-
-    assert result == 8105
-  end
-
-  test "part two test" do
-    result = Puzzles.Three.part_two(@input)
-
-    assert result == 70
-  end
-
-  test "part two real" do
-    result = Puzzles.Three.part_two()
-
-    assert result == 2363
-  end
+  aoc_test(70, Puzzles.Three.part_two(@input))
+  aoc_test(2363, Puzzles.Three.part_two())
 end

@@ -1,5 +1,6 @@
 defmodule TwoTest do
   use ExUnit.Case
+  import TestHelpers
 
   @input """
   A Y
@@ -8,27 +9,9 @@ defmodule TwoTest do
 
   """
 
-  test "part one test" do
-    result = Puzzles.Two.part_one(@input)
+  aoc_test(15, Puzzles.Two.part_one(@input))
+  aoc_test(14163, Puzzles.Two.part_one())
 
-    assert result == 15
-  end
-
-  test "part one real" do
-    result = Puzzles.Two.part_one()
-
-    assert result == 14163
-  end
-
-  test "part two test" do
-    result = Puzzles.Two.part_two(@input)
-
-    assert result == 12
-  end
-
-  test "part two real" do
-    result = Puzzles.Two.part_two()
-
-    assert result == 12091
-  end
+  aoc_test(12, Puzzles.Two.part_two(@input))
+  aoc_test(12091, Puzzles.Two.part_two())
 end
