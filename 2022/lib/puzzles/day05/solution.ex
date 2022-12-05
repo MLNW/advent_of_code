@@ -56,29 +56,42 @@ defmodule Puzzles.Day05 do
     |> Enum.map(fn line -> line |> Enum.map(&String.to_integer/1) end)
   end
 
-  def part_one(input \\ nil) do
+  defp part(input, mode) do
     result =
       input
       |> parse_input()
-      |> execute()
+      |> execute(mode)
 
     for {_, v} <- result, into: [] do
       List.first(v, "")
     end
-    |> Enum.reduce("", fn x, acc -> acc <> x end)
+    |> Enum.join("")
   end
 
-  defp execute({stacks, []}), do: stacks
-
-  defp execute({stacks, [instruction | instructions]}) do
-    execute({execute_instruction(instruction, stacks), instructions})
+  def part_one(input \\ nil) do
+    part(input, :one_by_one)
   end
 
-  defp execute_instruction([0 | _], stacks), do: stacks
+  def part_two(input \\ nil) do
+    part(input, :at_once)
+  end
 
-  defp execute_instruction([move | [from | [to]]], stacks) do
+  defp execute({stacks, []}, _), do: stacks
+
+  defp execute({stacks, [instruction | instructions]}, mode) do
+    execute({execute_instruction(instruction, stacks, mode), instructions}, mode)
+  end
+
+  defp execute_instruction([0 | _], stacks, :one_by_one), do: stacks
+
+  defp execute_instruction([move | [from | [to]]], stacks, :one_by_one) do
     {value, stacks} = Map.get_and_update(stacks, from, fn [v | rest] -> {v, rest} end)
     stacks = Map.update!(stacks, to, fn current -> [value] ++ current end)
-    execute_instruction([move - 1, from, to], stacks)
+    execute_instruction([move - 1, from, to], stacks, :one_by_one)
+  end
+
+  defp execute_instruction([move | [from | [to]]], stacks, :at_once) do
+    {value, stacks} = Map.get_and_update(stacks, from, fn stack -> Enum.split(stack, move) end)
+    Map.update!(stacks, to, fn current -> value ++ current end)
   end
 end
