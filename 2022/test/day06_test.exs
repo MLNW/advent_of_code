@@ -10,6 +10,6 @@ defmodule Day06Test do
   aoc_test(7, Puzzles.Day06.part_one(@input))
   aoc_test(1779, Puzzles.Day06.part_one())
 
-  # aoc_test("MCD", Puzzles.Day06.part_two(@input))
-  # aoc_test("LCTQFBVZV", Puzzles.Day06.part_two())
+  aoc_test(19, Puzzles.Day06.part_two(@input))
+  aoc_test(2635, Puzzles.Day06.part_two())
 end
