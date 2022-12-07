@@ -13,18 +13,31 @@ defmodule Puzzles.Day07 do
     |> List.delete_at(0)
   end
 
-  def part_one(input \\ nil) do
+  defp part(input) do
     Cachex.start_link(name: :seven)
     FileSystem.new()
-
-    input
-    |> parse_input()
-    |> execute(Directory.new("/"))
+    input |> parse_input() |> execute(Directory.new("/"))
 
     FileSystem.get()
     |> Enum.map(fn {_path, dir} -> dir |> Directory.calculate_size() end)
+  end
+
+  def part_one(input \\ nil) do
+    part(input)
     |> Enum.filter(&(&1 <= 100_000))
     |> Enum.sum()
+  end
+
+  def part_two(input \\ nil) do
+    sorted_sizes = part(input) |> Enum.sort()
+
+    required = 30_000_000
+    total = 70_000_000
+    current = FileSystem.root() |> Directory.calculate_size()
+
+    needed = required - (total - current)
+
+    sorted_sizes |> Enum.find(&(&1 >= needed))
   end
 
   defp execute([], directory), do: directory

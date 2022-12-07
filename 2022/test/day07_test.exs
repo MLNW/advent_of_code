@@ -31,4 +31,7 @@ defmodule Day07Test do
 
   aoc_test(95437, Puzzles.Day07.part_one(@input))
   aoc_test(1_770_595, Puzzles.Day07.part_one())
+
+  aoc_test(24_933_642, Puzzles.Day07.part_two(@input))
+  aoc_test(2_195_372, Puzzles.Day07.part_two())
 end

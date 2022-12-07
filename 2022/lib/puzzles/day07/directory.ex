@@ -1,5 +1,5 @@
 defmodule Puzzles.Day07.Directory do
-  defstruct name: nil, parent: nil, children: []
+  defstruct name: nil, parent: nil, size: nil, children: []
 
   alias Puzzles.Day07.Directory
   alias Puzzles.Day07.File
@@ -8,6 +8,7 @@ defmodule Puzzles.Day07.Directory do
   @type t :: %Puzzles.Day07.Directory{
           name: String.t(),
           parent: nil | t,
+          size: nil | integer(),
           children: [t | Puzzles.Day07.File.t()]
         }
 
@@ -40,13 +41,19 @@ defmodule Puzzles.Day07.Directory do
   def path(%Directory{name: name, parent: parent}, path),
     do: path(parent, "#{name}/#{path}")
 
+  def calculate_size(%Directory{size: size}) when not is_nil(size), do: size
+
   def calculate_size(directory) do
-    directory.children
-    |> Enum.map(fn
-      %File{size: size} -> size
-      %Directory{} = child -> child |> FileSystem.get() |> calculate_size()
-    end)
-    |> Enum.sum()
+    size =
+      directory.children
+      |> Enum.map(fn
+        %File{size: size} -> size
+        %Directory{} = child -> child |> FileSystem.get() |> calculate_size()
+      end)
+      |> Enum.sum()
+
+    FileSystem.put(%{directory | size: size})
+    size
   end
 
   defp parse_child(child, parent) do

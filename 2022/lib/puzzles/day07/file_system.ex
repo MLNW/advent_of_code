@@ -1,5 +1,6 @@
 defmodule Puzzles.Day07.FileSystem do
   alias Puzzles.Day07.Directory
+
   def new(), do: update(%{})
 
   def get(), do: Cachex.get!(:seven, :fs)
