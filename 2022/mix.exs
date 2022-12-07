@@ -21,6 +21,7 @@ defmodule AdventOfCode2022.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:cachex, "~> 3.4"},
       {:unicode, "~> 1.15"}
     ]
   end
