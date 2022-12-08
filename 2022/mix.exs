@@ -22,6 +22,7 @@ defmodule AdventOfCode2022.MixProject do
   defp deps do
     [
       {:cachex, "~> 3.4"},
+      {:matrex, "~> 0.6"},
       {:unicode, "~> 1.15"}
     ]
   end

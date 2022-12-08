@@ -15,6 +15,7 @@ defmodule Puzzles.Day07 do
 
   defp part(input) do
     Cachex.start_link(name: :seven)
+
     FileSystem.new()
     input |> parse_input() |> execute(Directory.new("/"))
 
