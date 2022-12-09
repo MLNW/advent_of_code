@@ -14,6 +14,6 @@ defmodule Day08Test do
   aoc_test(21, Puzzles.Day08.part_one(@input))
   aoc_test(1779, Puzzles.Day08.part_one())
 
-  # aoc_test(24_933_642, Puzzles.Day08.part_two(@input))
-  # aoc_test(2_195_372, Puzzles.Day08.part_two())
+  aoc_test(8, Puzzles.Day08.part_two(@input))
+  aoc_test(172_224, Puzzles.Day08.part_two())
 end
