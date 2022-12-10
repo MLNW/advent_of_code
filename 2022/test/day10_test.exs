@@ -2,14 +2,7 @@ defmodule Day10Test do
   use ExUnit.Case
   import TestHelpers
 
-  @small_input """
-  noop
-  addx 3
-  addx -5
-
-  """
-
-  @large_input """
+  @input """
   addx 15
   addx -11
   addx 6
@@ -159,10 +152,27 @@ defmodule Day10Test do
 
   """
 
-  aoc_test(0, Puzzles.Day10.part_one(@small_input))
-  aoc_test(13140, Puzzles.Day10.part_one(@large_input))
+  @test_output """
+  ##..##..##..##..##..##..##..##..##..##..
+  ###...###...###...###...###...###...###.
+  ####....####....####....####....####....
+  #####.....#####.....#####.....#####.....
+  ######......######......######......####
+  #######.......#######.......#######.....
+  """
+
+  @real_ouput """
+  ###..####.#..#.####..##....##..##..###..
+  #..#....#.#..#.#....#..#....#.#..#.#..#.
+  #..#...#..####.###..#.......#.#....###..
+  ###...#...#..#.#....#.##....#.#....#..#.
+  #.#..#....#..#.#....#..#.#..#.#..#.#..#.
+  #..#.####.#..#.#.....###..##...##..###..
+  """
+
+  aoc_test(13140, Puzzles.Day10.part_one(@input))
   aoc_test(13860, Puzzles.Day10.part_one())
 
-  # aoc_test(36, Puzzles.Day10.part_two(@input))
-  # aoc_test(172_224, Puzzles.Day10.part_two())
+  aoc_test(@test_output, Puzzles.Day10.part_two(@input))
+  aoc_test(@real_ouput, Puzzles.Day10.part_two())
 end
