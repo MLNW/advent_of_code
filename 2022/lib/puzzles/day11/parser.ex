@@ -1,14 +1,29 @@
 defmodule Puzzles.Day11.Parser do
   alias Puzzles.Day11.Monkey
 
-  def parse_input(input) when is_nil(input), do: Common.Utils.read_input(11) |> parse_input()
+  def parse_input(input, super_modulo?) when is_nil(input),
+    do: Common.Utils.read_input(11) |> parse_input(super_modulo?)
 
-  def parse_input(input) do
-    input
-    |> String.split("\n\n")
-    |> Enum.filter(&(&1 != ""))
-    |> Enum.map(&parse_monkey/1)
-    |> Enum.into(%{}, fn %Monkey{id: id} = monkey -> {id, monkey} end)
+  def parse_input(input, super_modulo?) do
+    result =
+      input
+      |> String.split("\n\n")
+      |> Enum.filter(&(&1 != ""))
+      |> Enum.map(&parse_monkey(&1))
+      |> Enum.into(%{}, fn %Monkey{id: id} = monkey -> {id, monkey} end)
+
+    if super_modulo? do
+      super_modulo =
+        result
+        |> Enum.reduce(1, fn {_id, monkey}, acc -> acc * monkey.test end)
+
+      result
+      |> Enum.into(%{}, fn {id, monkey} ->
+        {id, monkey |> Map.update!(:super_modulo, fn _ -> super_modulo end)}
+      end)
+    else
+      result
+    end
   end
 
   defp parse_monkey(input) do

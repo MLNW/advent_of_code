@@ -36,6 +36,6 @@ defmodule Day11Test do
   aoc_test(10605, Puzzles.Day11.part_one(@input))
   aoc_test(62491, Puzzles.Day11.part_one())
 
-  # aoc_test(@test_output, Puzzles.Day11.part_two(@input))
-  # aoc_test(@real_ouput, Puzzles.Day11.part_two())
+  aoc_test(2_713_310_158, Puzzles.Day11.part_two(@input))
+  aoc_test(17_408_399_184, Puzzles.Day11.part_two())
 end

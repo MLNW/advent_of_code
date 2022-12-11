@@ -1,6 +1,14 @@
 defmodule Puzzles.Day11.Monkey do
   alias Puzzles.Day11.Monkey
-  defstruct id: 0, items: [], operation: nil, test: 0, right: 0, wrong: 0, inspections: 0
+
+  defstruct id: 0,
+            items: [],
+            operation: nil,
+            test: 0,
+            right: 0,
+            wrong: 0,
+            inspections: 0,
+            super_modulo: nil
 
   @type id :: pos_integer()
   @type t :: %Monkey{
@@ -9,7 +17,8 @@ defmodule Puzzles.Day11.Monkey do
           operation: {fun(), atom()},
           right: id(),
           wrong: id(),
-          inspections: pos_integer()
+          inspections: pos_integer(),
+          super_modulo: nil | pos_integer()
         }
 
   def take_turn(monkey, monkeys) do
@@ -32,7 +41,7 @@ defmodule Puzzles.Day11.Monkey do
         x -> function.(item, x)
       end
 
-    worry = div(worry, 3)
+    worry = if monkey.super_modulo, do: rem(worry, monkey.super_modulo), else: div(worry, 3)
 
     updated_monkeys =
       case rem(worry, monkey.test) == 0 do
