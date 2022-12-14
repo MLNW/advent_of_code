@@ -1,5 +1,6 @@
 defmodule Puzzles.Day12.Parser do
   alias Graph.Edge
+
   def parse_input(input) when is_nil(input), do: Common.Utils.read_input(12) |> parse_input()
 
   def parse_input(input) do
@@ -44,6 +45,7 @@ defmodule Puzzles.Day12.Parser do
     end)
   end
 
+  # defp calc_weight(a, b), do: b - a
   defp calc_weight(a, b), do: if(b - a <= 0, do: 1, else: b - a)
 
   defp vertex(input, row, col), do: {{row, col}, vertex_elem(input, row, col)}

@@ -14,6 +14,38 @@ defmodule Puzzles.Day12 do
     length
   end
 
+  def part_two(input \\ nil) do
+    graph = input |> Parser.parse_input() |> filter()
+
+    [end_point] =
+      graph
+      |> Graph.vertices()
+      |> Enum.filter(fn {{_row, _col}, elem} -> elem == 37 end)
+
+    closest = graph |> bfs([end_point])
+    {:ok, length, _path} = graph |> shortest_path(closest, end_point)
+    length
+  end
+
+  defp bfs(graph, to_visit, visited \\ [], match \\ nil)
+  defp bfs(_graph, _to_visit, _visited, match) when not is_nil(match), do: match
+
+  defp bfs(graph, [{{_row, _col}, elem} = next | to_visit], visited, nil) do
+    new_visited = [next] ++ visited
+
+    new_visits =
+      graph
+      |> Graph.in_edges(next)
+      |> Enum.map(fn %Edge{v1: vertex} -> vertex end)
+      |> Enum.filter(&(&1 not in new_visited))
+
+    new_matches = if elem in [10, 11], do: next, else: nil
+
+    new_visits = (to_visit ++ new_visits) |> Enum.uniq()
+
+    bfs(graph, new_visits, new_visited, new_matches)
+  end
+
   defp filter(graph) do
     steep_edges =
       graph
@@ -23,39 +55,6 @@ defmodule Puzzles.Day12 do
     graph |> Graph.delete_edges(steep_edges)
   end
 
-  def print(graph, width) do
-    graph |> Graph.info() |> IO.inspect()
-
-    vertices =
-      graph
-      |> Graph.vertices()
-
-    header =
-      0..(width - 1)
-      |> Enum.map(&Integer.to_string/1)
-      |> Enum.reduce("    ", fn x, acc ->
-        "#{acc}#{if String.length(x) == 1, do: " ", else: ""}#{x} "
-      end)
-
-    separator =
-      0..(width - 1)
-      |> Enum.reduce("--+", fn _, acc -> acc <> "---" end)
-
-    vertices
-    |> Enum.sort_by(fn {{_px, py}, _p} -> py end)
-    |> Enum.sort_by(fn {{px, _py}, _p} -> px end)
-    |> Enum.reduce("#{header}\n#{separator}\n", fn {{row, col}, p}, acc ->
-      index =
-        if col == 0,
-          do: "#{if length(Integer.digits(row)) == 1, do: " ", else: ""}#{row}| ",
-          else: ""
-
-      delimter = if col == width - 1, do: "\n#{separator}\n", else: " "
-      "#{acc}#{index}#{Integer.to_string(p)}#{delimter}"
-    end)
-    |> IO.puts()
-  end
-
   defp find(graph, vertex) do
     graph
     |> Graph.vertices()
@@ -63,13 +62,13 @@ defmodule Puzzles.Day12 do
     |> List.first()
   end
 
-  def shortest_path(graph, {{_px, _py}, _p} = start, {{_qx, _qy}, _q} = stop) do
+  defp shortest_path(graph, {{_px, _py}, _p} = start, {{_qx, _qy}, _q} = stop) do
     path = graph |> Graph.get_shortest_path(start, stop)
 
     if path, do: {:ok, length(path) - 1, path}, else: {:none}
   end
 
-  def shortest_path(graph, start, stop) do
+  defp shortest_path(graph, start, stop) do
     shortest_path(graph, find(graph, start), find(graph, stop))
   end
 end
