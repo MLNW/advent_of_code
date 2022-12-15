@@ -4,11 +4,28 @@ defmodule Puzzles.Day13 do
   def part_one(input \\ nil) do
     input
     |> Parser.parse_input()
+    |> Enum.chunk_every(2)
+    |> Enum.map(fn [a | [b]] -> {a, b} end)
     |> Enum.map(&is_sorted?/1)
     |> Enum.with_index(1)
     |> Enum.filter(fn {pair_is_sorted, _index} -> pair_is_sorted end)
     |> Enum.map(fn {_pair, index} -> index end)
     |> Enum.sum()
+  end
+
+  def part_two(input \\ nil) do
+    divider_packets = [[[2]], [[6]]]
+
+    [a | [b]] =
+      input
+      |> Parser.parse_input()
+      |> Kernel.++(divider_packets)
+      |> Enum.sort(&is_sorted?({&1, &2}))
+      |> Enum.with_index(1)
+      |> Enum.filter(fn {x, _index} -> x in divider_packets end)
+      |> Enum.map(fn {_x, index} -> index end)
+
+    a * b
   end
 
   def is_sorted?({a, b}) when is_integer(a) and is_integer(b) do

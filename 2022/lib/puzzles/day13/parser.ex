@@ -7,7 +7,5 @@ defmodule Puzzles.Day13.Parser do
     |> Enum.filter(&(&1 != ""))
     |> Enum.map(&Code.eval_string/1)
     |> Enum.map(fn {list, _} -> list end)
-    |> Enum.chunk_every(2)
-    |> Enum.map(fn [a | [b]] -> {a, b} end)
   end
 end

@@ -42,7 +42,7 @@ defmodule Day13Test do
   """
 
   aoc_test(
-    [{[1, 1, 3, 1, 1], [1, 1, 5, 1, 1]}, {[[1], [2, 3, 4]], [[1], 4]}, {[7, 7, 7, 7], [7, 7, 7]}],
+    [[1, 1, 3, 1, 1], [1, 1, 5, 1, 1], [[1], [2, 3, 4]], [[1], 4], [7, 7, 7, 7], [7, 7, 7]],
     Puzzles.Day13.Parser.parse_input(@small_input)
   )
 
@@ -69,6 +69,6 @@ defmodule Day13Test do
   aoc_test(13, Puzzles.Day13.part_one(@input))
   aoc_test(5350, Puzzles.Day13.part_one())
 
-  # aoc_test(29, Puzzles.Day13.part_two(@input))
-  # aoc_test(375, Puzzles.Day13.part_two())
+  aoc_test(140, Puzzles.Day13.part_two(@input))
+  aoc_test(19570, Puzzles.Day13.part_two())
 end
