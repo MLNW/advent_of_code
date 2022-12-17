@@ -20,8 +20,16 @@ defmodule Puzzles.Day14.Parser do
   end
 
   defp parse_cave(rocks) do
-    rock = rocks |> Enum.map(&parse_rock/1) |> List.flatten()
-    %Coordinate{y: lowest_point} = rock |> Enum.max_by(&(&1.y))
+    rock =
+      rocks
+      |> Enum.map(&parse_rock/1)
+      |> List.flatten()
+      |> Enum.reduce(%{}, fn %Coordinate{} = coordinate, acc ->
+        acc |> Map.put(coordinate, true)
+      end)
+
+    %Coordinate{y: lowest_point} = rock |> Map.keys() |> Enum.max_by(&(&1.y))
+
     %Cave{rock: rock, lowest_point: lowest_point}
   end
 

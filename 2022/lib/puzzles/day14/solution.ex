@@ -3,11 +3,20 @@ defmodule Puzzles.Day14 do
   alias Puzzles.Day14.Parser
 
   def part_one(input \\ nil) do
+    input |> part(false)
+  end
+
+  def part_two(input \\ nil) do
+    input |> part(true)
+  end
+
+  defp part(input, has_floor) do
+    cave = input |> Parser.parse_input()
+
     %Cave{sand: sand} =
-      input
-      |> Parser.parse_input()
+      %{cave | has_floor: has_floor}
       |> Cave.fill()
 
-    length(sand)
+    sand |> Map.keys() |> length()
   end
 end
