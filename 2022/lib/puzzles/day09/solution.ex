@@ -1,5 +1,5 @@
 defmodule Puzzles.Day09 do
-  alias Puzzles.Day09.Coordinate
+  alias Common.Coordinate
   alias Puzzles.Day09.RopeState
   defp parse_input(input) when is_nil(input), do: Common.Utils.read_input(9) |> parse_input()
 

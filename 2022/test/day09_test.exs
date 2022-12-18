@@ -1,5 +1,5 @@
 defmodule Day09Test do
-  alias Puzzles.Day09.Coordinate
+  alias Common.Coordinate
   alias Puzzles.Day09.RopeState
   use ExUnit.Case
   import TestHelpers
