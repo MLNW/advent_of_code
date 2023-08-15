@@ -29,6 +29,6 @@ defmodule Day18Test do
   aoc_test(64, Puzzles.Day18.part_one(@input))
   aoc_test(3530, Puzzles.Day18.part_one())
 
-  # aoc_test(1514285714288, Puzzles.Day18.part_two(@input))
-  # aoc_test(1514285714288, Puzzles.Day18.part_two())
+  aoc_test(58, Puzzles.Day18.part_two(@input))
+  #aoc_test(1514285714288, Puzzles.Day18.part_two())
 end
