@@ -37,7 +37,7 @@ pub fn part_two(input: &str) -> Option<u32> {
             "seven" => String::from("s7n"),
             "eight" => String::from("e8t"),
             "nine" => String::from("n9e"),
-            _ => caps[0].to_string()
+            _ => caps[0].to_string(),
         }
     };
 
