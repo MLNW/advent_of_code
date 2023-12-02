@@ -33,7 +33,11 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    None
+    parse_games(input)
+        .into_iter()
+        .map(minimum_set)
+        .map(game_power)
+        .reduce(|acc, power| acc + power)
 }
 
 fn is_possible(game: &Game) -> bool {
@@ -52,6 +56,47 @@ fn is_possible(game: &Game) -> bool {
         }
     }
     true
+}
+
+fn minimum_set(game: Game) -> Set {
+    let mut red = ColorCount {
+        color: Color::Red,
+        count: 0,
+    };
+    let mut green = ColorCount {
+        color: Color::Green,
+        count: 0,
+    };
+    let mut blue = ColorCount {
+        color: Color::Blue,
+        count: 0,
+    };
+
+    for set in game.sets {
+        for ColorCount { color, count } in set.cubes {
+            let color = match color {
+                Color::Red => &mut red,
+                Color::Green => &mut green,
+                Color::Blue => &mut blue,
+            };
+            if count > color.count {
+                color.count = count;
+            }
+        }
+    }
+
+    Set {
+        cubes: Vec::from([red, green, blue]),
+    }
+}
+
+fn game_power(minimum_set: Set) -> u32 {
+    minimum_set
+        .cubes
+        .iter()
+        .map(|ColorCount { count, .. }| *count)
+        .reduce(|acc, count| acc * count)
+        .unwrap()
 }
 
 fn parse_games(input: &str) -> Vec<Game> {
@@ -101,6 +146,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(2286));
     }
 }
