@@ -4,7 +4,6 @@
 
 Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.rust-lang.org/).
 
-<!--- advent_readme_stars table --->
 
 <!--- benchmarking table --->
 
@@ -168,30 +167,6 @@ cargo read <day>
 2. Create an `.adventofcode.session` file in your home directory and paste your session cookie. To retrieve the session cookie, press F12 anywhere on the Advent of Code website to open your browser developer tools. Look in _Cookies_ under the _Application_ or _Storage_ tab, and copy out the `session` cookie value. [^1]
 
 Once installed, you can use the [download command](#download-input--description-for-a-day), the read command, and automatically submit solutions via the [`--submit` flag](#submitting-solutions).
-
-### Automatically track ⭐️ progress in the readme
-
-This template includes [a Github action](https://github.com/k2bd/advent-readme-stars) that automatically updates the readme with your advent of code progress.
-
-To enable it, complete the following steps:
-
-#### 1. Create a private leaderboard
-
-Go to the leaderboard page of the year you want to track and click _Private Leaderboard_. If you have not created a leaderboard yet, create one by clicking _Create It_. Your leaderboard should be accessible under `https://adventofcode.com/{year}/leaderboard/private/view/{aoc_user_id}`.
-
-#### 2. Set repository secrets
-
-Go to the _Secrets_ tab in your repository settings and create the following secrets:
-
--   `AOC_USER_ID`: Go to [this page](https://adventofcode.com/settings) and copy your user id. It's the number behind the `#` symbol in the first name option. Example: `3031`.
--   `AOC_YEAR`: the year you want to track. Example: `2021`.
--   `AOC_SESSION`: an active session[^2] for the advent of code website. To get this, press F12 anywhere on the Advent of Code website to open your browser developer tools. Look in your Cookies under the Application or Storage tab, and copy out the `session` cookie.
-
-Go to the _Variables_ tab in your repository settings and create the following variable:
-
--   `AOC_ENABLED`: This variable controls whether the workflow is enabled. Set it to `true` to enable the progress tracker. After you complete AoC or no longer work on it, you can set this to `false` to disable the CI.
-
-✨ You can now run this action manually via the _Run workflow_ button on the workflow page. If you want the workflow to run automatically, uncomment the `schedule` section in the `readme-stars.yml` workflow file or add a `push` trigger.
 
 ### Check code formatting / clippy lints in CI
 
