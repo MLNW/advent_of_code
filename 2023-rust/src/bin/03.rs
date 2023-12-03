@@ -71,8 +71,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 
     parts
         .iter()
-        .filter(|part| part.neighboring_symbol(&symbols).is_some())
-        .map(|part| part.number)
+        .filter_map(|part| part.neighboring_symbol(&symbols).map(|_| part.number))
         .reduce(|acc, number| acc + number)
 }
 
