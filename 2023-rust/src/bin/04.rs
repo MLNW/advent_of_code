@@ -1,4 +1,4 @@
-use std::collections::{HashMap, VecDeque};
+use std::collections::VecDeque;
 
 use itertools::Itertools;
 
@@ -43,17 +43,14 @@ pub fn part_one(input: &str) -> Option<u32> {
 pub fn part_two(input: &str) -> Option<u32> {
     let cards = parse_input(input);
 
-    let lookup: HashMap<u32, Vec<u32>> =
-        cards.iter().map(|card| (card.id, card.copies())).collect();
+    let lookup = cards.iter().map(|card| card.copies()).collect_vec();
 
     let mut queue = VecDeque::from(cards.iter().map(|card| card.id).collect::<Vec<u32>>());
-
     let mut total = 0;
-    while let Some(card) = queue.pop_front() {
+    while let Some(id) = queue.pop_front() {
         total += 1;
 
-        let copies = lookup.get(&card).unwrap();
-        queue.extend(copies);
+        queue.extend(&lookup[id as usize]);
     }
 
     Some(total)
