@@ -1,9 +1,12 @@
+use std::collections::{HashMap, VecDeque};
+
 use itertools::Itertools;
 
 advent_of_code::solution!(4);
 
+#[derive(Clone)]
 struct ScratchCard {
-    index: u32,
+    id: u32,
     winning_numbers: Vec<u32>,
     numbers: Vec<u32>,
 }
@@ -18,6 +21,16 @@ impl ScratchCard {
             .fold(1, |acc, _| acc * 2);
         fold / 2
     }
+
+    pub fn copies(&self) -> Vec<u32> {
+        self.winning_numbers
+            .iter()
+            .map(|number| self.numbers.contains(number))
+            .filter(|contained| *contained)
+            .enumerate()
+            .map(|(i, _)| self.id + i as u32 + 1)
+            .collect_vec()
+    }
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
@@ -28,7 +41,22 @@ pub fn part_one(input: &str) -> Option<u32> {
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    None
+    let cards = parse_input(input);
+
+    let lookup: HashMap<u32, Vec<u32>> =
+        cards.iter().map(|card| (card.id, card.copies())).collect();
+
+    let mut queue = VecDeque::from(cards.iter().map(|card| card.id).collect::<Vec<u32>>());
+
+    let mut total = 0;
+    while let Some(card) = queue.pop_front() {
+        total += 1;
+
+        let copies = lookup.get(&card).unwrap();
+        queue.extend(copies);
+    }
+
+    Some(total)
 }
 
 fn parse_input(input: &str) -> Vec<ScratchCard> {
@@ -38,8 +66,9 @@ fn parse_input(input: &str) -> Vec<ScratchCard> {
         .filter_map(|line| line.split_once(':'))
         .map(|(index, numbers)| {
             let (winning, mine) = numbers.split_once('|').unwrap();
+            let parsed_index: u32 = index.trim().parse().unwrap();
             ScratchCard {
-                index: index.trim().parse().unwrap(),
+                id: parsed_index - 1,
                 winning_numbers: parse_numbers(winning),
                 numbers: parse_numbers(mine),
             }
@@ -67,6 +96,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(30));
     }
 }
