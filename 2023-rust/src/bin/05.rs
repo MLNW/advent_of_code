@@ -1,6 +1,10 @@
-use std::collections::{HashMap, VecDeque};
+use std::{
+    collections::{HashMap, VecDeque},
+    time::SystemTime,
+};
 
 use itertools::Itertools;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 advent_of_code::solution!(5);
 
@@ -48,20 +52,38 @@ fn solve_part_one(seeds: Vec<u64>, maps: &Vec<HashMap<RangeKey, MapEntry>>) -> O
 pub fn part_two(input: &str) -> Option<u64> {
     let (seeds, maps) = parse_input(input);
 
-    let mut min: u64 = std::u64::MAX;
+    let max_seed_range_length = 10_000_000;
+    let mut seed_ranges: Vec<(u64, u64)> = Vec::new();
     for mut chunk in &seeds.iter().chunks(2) {
-        let start = chunk.next().unwrap();
-        let length = chunk.next().unwrap();
-        let current_seeds = (*start..*start + *length).collect_vec();
+        let mut start = *chunk.next().unwrap();
+        let length = *chunk.next().unwrap();
+        let stop = start + length;
 
-        let current_min = solve_part_one(current_seeds, &maps).unwrap();
-        println!("{start}-{length}, current min: {current_min}, last min: {min}");
-        if current_min < min {
-            min = current_min;
+        loop {
+            if start + max_seed_range_length < stop {
+                seed_ranges.push((start, start + max_seed_range_length));
+                start += max_seed_range_length;
+            } else {
+                seed_ranges.push((start, stop));
+                break;
+            }
         }
     }
 
-    Some(min)
+    seed_ranges
+        .into_par_iter()
+        .filter_map(|(start, stop)| {
+            let timer = SystemTime::now();
+            let current_seeds = (start..stop).collect_vec();
+            let result = solve_part_one(current_seeds, &maps);
+            println!(
+                "[{start}-{stop}] in {:?} => {:?}",
+                timer.elapsed().unwrap(),
+                result
+            );
+            result
+        })
+        .min()
 }
 
 fn find_map_entry(map: &HashMap<RangeKey, MapEntry>, value: u64) -> Option<MapEntry> {
