@@ -14,7 +14,6 @@ struct RangeKey {
 struct MapEntry {
     source: u64,
     destination: u64,
-    range: u64,
 }
 
 impl MapEntry {
@@ -26,11 +25,15 @@ impl MapEntry {
 pub fn part_one(input: &str) -> Option<u64> {
     let (seeds, maps) = parse_input(input);
 
+    solve_part_one(seeds, &maps)
+}
+
+fn solve_part_one(seeds: Vec<u64>, maps: &Vec<HashMap<RangeKey, MapEntry>>) -> Option<u64> {
     seeds
         .iter()
         .map(|seed| {
             let mut value = *seed;
-            for map in &maps {
+            for map in maps {
                 let entry = find_map_entry(map, value);
                 value = match entry {
                     Some(entry) => entry.map(&value),
@@ -43,13 +46,28 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
-    None
+    let (seeds, maps) = parse_input(input);
+
+    let mut min: u64 = std::u64::MAX;
+    for mut chunk in &seeds.iter().chunks(2) {
+        let start = chunk.next().unwrap();
+        let length = chunk.next().unwrap();
+        let current_seeds = (*start..*start + *length).collect_vec();
+
+        let current_min = solve_part_one(current_seeds, &maps).unwrap();
+        println!("{start}-{length}, current min: {current_min}, last min: {min}");
+        if current_min < min {
+            min = current_min;
+        }
+    }
+
+    Some(min)
 }
 
 fn find_map_entry(map: &HashMap<RangeKey, MapEntry>, value: u64) -> Option<MapEntry> {
     map.iter()
         .find(|(key, _)| value >= key.start && value <= key.end)
-        .map(|(_, &val)| val)
+        .map(|(_, &map)| map)
 }
 
 fn parse_input(input: &str) -> (Vec<u64>, Vec<HashMap<RangeKey, MapEntry>>) {
@@ -91,7 +109,6 @@ fn parse_map(input: &str) -> HashMap<RangeKey, MapEntry> {
                 MapEntry {
                     source,
                     destination,
-                    range,
                 },
             )
         })
@@ -111,6 +128,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(46));
     }
 }
