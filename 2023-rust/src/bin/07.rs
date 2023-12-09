@@ -20,15 +20,24 @@ struct CamelPokerHand {
 }
 
 impl CamelPokerHand {
-    fn get_type(&self) -> HandType {
-        let sorted_groups: Vec<(u8, u32)> = self
-            .cards
-            .iter()
-            .into_group_map_by(|card| *card)
-            .values()
-            .map(|cards| (*cards[0], cards.len() as u32))
+    fn get_type(&self, jokers: bool) -> HandType {
+        let mut counter: [u32; 14] = [0; 14];
+
+        for card in self.cards {
+            counter[card as usize] += 1;
+        }
+        let [joker_count, mut counter @ ..] = counter;
+
+        if jokers {
+            *counter.iter_mut().max().unwrap() += joker_count;
+        }
+
+        let sorted_groups: Vec<(usize, u32)> = counter
+            .into_iter()
+            .enumerate()
+            .filter(|(_, card)| card > &0)
             .sorted_by(|a, b| b.1.cmp(&a.1))
-            .collect();
+            .collect_vec();
 
         match sorted_groups.len() {
             1 => HandType::FiveOfAKind,
@@ -54,47 +63,55 @@ impl CamelPokerHand {
 }
 
 pub fn part_one(input: &str) -> Option<u32> {
+    Some(calculate_winnings(input, false))
+}
+
+pub fn part_two(input: &str) -> Option<u32> {
+    Some(calculate_winnings(input, true))
+}
+
+fn calculate_winnings(input: &str, jokers: bool) -> u32 {
     let mut winnings = input
         .lines()
-        .map(parse_hand)
+        .map(|line| parse_hand(line, jokers))
         .map(|hand| {
-            let hand_type = hand.get_type();
+            let hand_type = hand.get_type(jokers);
             (hand_type, hand.cards, hand.bid)
         })
         .collect_vec();
 
     winnings.sort_unstable();
 
-    Some(
-        winnings
-            .iter()
-            .zip(1..)
-            .map(|((_, _, bid), rank)| rank * bid)
-            .sum(),
-    )
+    winnings
+        .iter()
+        .zip(1..)
+        .map(|((_, _, bid), rank)| rank * bid)
+        .sum()
 }
 
-pub fn part_two(input: &str) -> Option<u32> {
-    None
-}
-
-fn parse_hand(line: &str) -> CamelPokerHand {
+fn parse_hand(line: &str, jokers: bool) -> CamelPokerHand {
     let (cards, bid) = line.split_once(' ').unwrap();
     CamelPokerHand {
-        cards: std::array::from_fn(|i| parse_card(&cards.as_bytes()[i])),
+        cards: std::array::from_fn(|i| parse_card(&cards.as_bytes()[i], jokers)),
         bid: bid.parse().unwrap(),
     }
 }
 
-fn parse_card(char: &u8) -> u8 {
-    match char {
+fn parse_card(char: &u8, jokers: bool) -> u8 {
+    (match char {
         b'A' => 14,
         b'K' => 13,
         b'Q' => 12,
-        b'J' => 11,
+        b'J' => {
+            if jokers {
+                1
+            } else {
+                11
+            }
+        }
         b'T' => 10,
         digit => digit - b'0',
-    }
+    }) - 1
 }
 
 #[cfg(test)]
@@ -110,6 +127,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(5905));
     }
 }
