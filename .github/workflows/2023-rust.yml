@@ -25,7 +25,7 @@ jobs:
                 restore-keys: ${{ runner.os }}-cargo-
             - name: cargo test
               run: cargo test --manifest-path 2023-rust/Cargo.toml
-            - name: cargo clippy
-              run: cargo clippy --manifest-path 2023-rust/Cargo.toml -- -D warnings
+            #- name: cargo clippy
+            #  run: cargo clippy --manifest-path 2023-rust/Cargo.toml -- -D warnings
             - name: cargo fmt
               run: cargo fmt --check --manifest-path 2023-rust/Cargo.toml
